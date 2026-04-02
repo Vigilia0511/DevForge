@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevForge Studio — Full-Stack Freelance Developers</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0b0f14; --bg2: #111720; --bg3: #161d28;
+  --accent: #00e5ff; --accent2: #7c6fff; --accent3: #ff6b6b; --accent4: #00e676;
+  --text: #e8edf3; --muted: #6b7a90;
+  --border: rgba(255,255,255,0.06); --card: rgba(255,255,255,0.03);
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; line-height: 1.6; }
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.025; pointer-events: none; z-index: 9999;
+}
+.grid-bg {
+  position: fixed; inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+  background-size: 60px 60px; pointer-events: none; z-index: 0;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 1.2rem 6vw; display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border); background: rgba(11,15,20,0.88); backdrop-filter: blur(18px);
+}
+.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em; color: var(--text); text-decoration: none; }
+.logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color .2s; }
+.nav-links a:hover { color: var(--text); }
+.nav-cta { padding: 0.5rem 1.2rem; border: 1px solid var(--accent); border-radius: 6px; font-size: 0.82rem; font-weight: 500; color: var(--accent); text-decoration: none; transition: background .2s, color .2s; }
+.nav-cta:hover { background: var(--accent); color: var(--bg); }
+
+/* HERO */
+.hero { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 10rem 6vw 6rem; overflow: hidden; }
+.hero-glow { position: absolute; top: -200px; left: -200px; width: 700px; height: 700px; background: radial-gradient(circle, rgba(0,229,255,0.07) 0%, transparent 70%); pointer-events: none; animation: pulse 6s ease-in-out infinite; }
+.hero-glow2 { position: absolute; bottom: -150px; right: -100px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(124,111,255,0.07) 0%, transparent 70%); pointer-events: none; animation: pulse 8s ease-in-out infinite reverse; }
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.1);opacity:0.7} }
+.hero-tag { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.8rem; opacity: 0; animation: fadeUp 0.6s ease forwards 0.2s; }
+.hero-tag::before { content: ''; display: block; width: 24px; height: 1px; background: var(--accent); }
+.hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(3rem,7vw,6.5rem); font-weight: 800; line-height: 1.0; letter-spacing: -0.04em; max-width: 14ch; opacity: 0; animation: fadeUp 0.7s ease forwards 0.35s; }
+.hero h1 em { font-style: normal; color: transparent; -webkit-text-stroke: 1.5px var(--accent); }
+.hero-sub { margin-top: 1.8rem; font-size: 1.05rem; font-weight: 300; color: var(--muted); max-width: 48ch; line-height: 1.7; opacity: 0; animation: fadeUp 0.7s ease forwards 0.5s; }
+.hero-actions { margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.7s ease forwards 0.65s; }
+.btn-primary { padding: 0.85rem 2rem; background: var(--accent); color: var(--bg); border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none; transition: transform .2s, box-shadow .2s; box-shadow: 0 0 30px rgba(0,229,255,0.2); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(0,229,255,0.35); }
+.btn-ghost { padding: 0.85rem 2rem; background: transparent; color: var(--text); border: 1px solid var(--border); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem; cursor: pointer; text-decoration: none; transition: border-color .2s, background .2s; }
+.btn-ghost:hover { border-color: var(--muted); background: var(--card); }
+.scroll-hint { position: absolute; bottom: 2.5rem; left: 6vw; display: flex; align-items: center; gap: 0.6rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); opacity: 0; animation: fadeUp 0.7s ease forwards 1s; }
+.scroll-line { width: 40px; height: 1px; background: var(--muted); animation: lineGrow 1.5s ease infinite; }
+@keyframes lineGrow { 0%,100%{transform:scaleX(1)} 50%{transform:scaleX(0.5)} }
+
+/* SECTIONS */
+section { position: relative; z-index: 1; }
+.section-label { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 1rem; }
+.section-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem,4vw,3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 1rem; }
+.section-desc { font-size: 0.98rem; font-weight: 300; color: var(--muted); max-width: 52ch; line-height: 1.75; }
+
+/* PROJECTS */
+.projects { padding: 7rem 6vw; background: var(--bg2); }
+.projects-header { margin-bottom: 3.5rem; }
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+.proj-card { background: var(--bg2); padding: 2.5rem; position: relative; overflow: hidden; cursor: pointer; transition: background .25s; }
+.proj-card::after { content: 'View Details →'; position: absolute; bottom: 1.5rem; right: 1.8rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; color: var(--accent); opacity: 0; transform: translateX(-6px); transition: opacity .25s, transform .25s; }
+.proj-card:hover { background: var(--bg3); }
+.proj-card:hover::after { opacity: 1; transform: translateX(0); }
+.proj-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 60%, rgba(0,229,255,0.04)); opacity: 0; transition: opacity .3s; }
+.proj-card:hover::before { opacity: 1; }
+.proj-icon { font-size: 2.2rem; margin-bottom: 1.2rem; display: block; }
+.proj-title { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem; letter-spacing: -0.02em; }
+.proj-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+.proj-tag { display: inline-block; margin-top: 1.2rem; padding: 0.25rem 0.7rem; border-radius: 4px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.tag-cyan   { background: rgba(0,229,255,0.08); color: var(--accent); }
+.tag-purple { background: rgba(124,111,255,0.08); color: var(--accent2); }
+.tag-red    { background: rgba(255,107,107,0.08); color: var(--accent3); }
+.tag-green  { background: rgba(0,230,118,0.08); color: var(--accent4); }
+
+/* MODAL */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(7,10,15,0.88); backdrop-filter: blur(14px);
+  z-index: 500; display: flex; align-items: center; justify-content: center; padding: 2rem;
+  opacity: 0; pointer-events: none; transition: opacity .3s ease;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--bg3); border: 1px solid rgba(255,255,255,0.09); border-radius: 20px;
+  max-width: 680px; width: 100%; max-height: 88vh; overflow-y: auto; position: relative;
+  transform: translateY(30px) scale(0.97); transition: transform .35s cubic-bezier(.22,.68,0,1.2);
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
+.modal-hero { padding: 3rem 2.8rem 2rem; border-bottom: 1px solid var(--border); position: relative; }
+.modal-close { position: absolute; top: 1.5rem; right: 1.8rem; background: rgba(255,255,255,0.06); border: none; color: var(--muted); font-size: 1rem; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s, color .2s; }
+.modal-close:hover { background: rgba(255,255,255,0.12); color: var(--text); }
+.modal-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+.modal-title { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.6rem; }
+.modal-subtitle { font-size: 0.9rem; color: var(--muted); font-weight: 300; line-height: 1.75; }
+.modal-body { padding: 2rem 2.8rem 2.5rem; }
+.modal-section { margin-bottom: 2rem; }
+.modal-section-title { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 1rem; }
+.feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+.feature-list li { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 0.9rem; color: var(--text); line-height: 1.55; }
+.feature-list li::before { content: '▹'; color: var(--accent); flex-shrink: 0; margin-top: 0.05em; }
+.modal-tech { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.modal-tech-pill { padding: 0.3rem 0.85rem; border-radius: 999px; border: 1px solid var(--border); font-size: 0.78rem; color: var(--muted); background: var(--card); }
+.modal-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.modal-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.65rem 1.3rem; border-radius: 8px; font-size: 0.84rem; font-weight: 600; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; transition: transform .2s, box-shadow .2s, background .2s, border-color .2s; }
+.modal-btn.primary { background: var(--accent); color: var(--bg); box-shadow: 0 0 20px rgba(0,229,255,0.15); }
+.modal-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(0,229,255,0.3); }
+.modal-btn.ghost { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+.modal-btn.ghost:hover { border-color: var(--muted); background: rgba(255,255,255,0.06); }
+
+/* SKILLS */
+.skills { padding: 7rem 6vw; }
+.skills-header { margin-bottom: 3.5rem; }
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+.skill-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.8rem 1.5rem; transition: border-color .25s, transform .25s; }
+.skill-card:hover { border-color: rgba(0,229,255,0.2); transform: translateY(-3px); }
+.skill-icon { font-size: 1.6rem; margin-bottom: 0.8rem; }
+.skill-name { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+.skill-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+/* STACK */
+.stack { padding: 5rem 6vw; }
+.stack-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+.stack-pill { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.1rem; border: 1px solid var(--border); border-radius: 999px; font-size: 0.82rem; font-weight: 500; color: var(--text); background: var(--card); transition: border-color .2s; }
+.stack-pill:hover { border-color: var(--accent); }
+.stack-pill .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* PROCESS */
+.process { padding: 7rem 6vw; background: var(--bg2); }
+.process-header { margin-bottom: 3.5rem; }
+.process-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; }
+.step-num { font-family: 'Syne', sans-serif; font-size: 3.5rem; font-weight: 800; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.08); line-height: 1; margin-bottom: 0.8rem; letter-spacing: -0.04em; }
+.step-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.step-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+
+/* CTA */
+.cta-section { padding: 8rem 6vw; text-align: center; position: relative; overflow: hidden; }
+.cta-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 400px; background: radial-gradient(ellipse, rgba(0,229,255,0.06) 0%, transparent 70%); pointer-events: none; }
+.cta-section .section-title { margin: 0 auto 1rem; max-width: 18ch; }
+.cta-section .section-desc { margin: 0 auto 2.5rem; }
+.cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.cta-note { margin-top: 1.5rem; font-size: 0.8rem; color: var(--muted); }
+
+/* FOOTER */
+footer { padding: 2rem 6vw; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+.footer-left { font-size: 0.82rem; color: var(--muted); }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a { font-size: 0.82rem; color: var(--muted); text-decoration: none; transition: color .2s; }
+.footer-links a:hover { color: var(--text); }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+  .hero h1 { font-size: 2.8rem; }
+  footer { flex-direction: column; text-align: center; }
+  .modal-hero, .modal-body { padding-left: 1.5rem; padding-right: 1.5rem; }
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="modal" id="modal">
+    <div class="modal-hero">
+      <button class="modal-close" id="modalClose" aria-label="Close modal">✕</button>
+      <span class="modal-icon" id="mIcon"></span>
+      <div class="modal-title" id="mTitle"></div>
+      <p class="modal-subtitle" id="mSubtitle"></p>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="modal-section-title">Key Features</div>
+        <ul class="feature-list" id="mFeatures"></ul>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Tech Stack</div>
+        <div class="modal-tech" id="mTech"></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Want something like this?</div>
+        <div class="modal-actions">
+          <button class="modal-btn primary" onclick="goTo('#skills')">Our Skills Stack →</button>
+          <button class="modal-btn ghost" onclick="goTo('#process')">How We Build →</button>
+          <button class="modal-btn ghost" onclick="goTo('#contact')">Hire Us →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Dev<span>Forge</span></a>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#process">Process</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Hire Us</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <p class="hero-tag">Full-Stack Freelance Developers</p>
+  <h1>We build systems that <em>just work.</em></h1>
+  <p class="hero-sub">From photobooth kiosks to exam generators — we design, develop, and deploy complete solutions using PHP, Python, C#, and more. Clean UI. Solid backend. Secure servers.</p>
+  <div class="hero-actions">
+    <a href="#projects" class="btn-primary">See Our Work</a>
+    <a href="#contact" class="btn-ghost">Get in Touch</a>
+  </div>
+  <div class="scroll-hint"><span class="scroll-line"></span>Scroll to explore</div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="projects-header fade-in">
+    <p class="section-label">What We've Built</p>
+    <h2 class="section-title">Our Systems & Products</h2>
+    <p class="section-desc">Click any project card to explore features, tech stack, and more details.</p>
+  </div>
+  <div class="projects-grid fade-in">
+    <div class="proj-card" onclick="openModal('photobooth')" tabindex="0" role="button">
+      <span class="proj-icon">📸</span>
+      <div class="proj-title">Photobooth System</div>
+      <p class="proj-desc">Interactive photo capture system with live filters, custom frames, and instant print or digital share features.</p>
+      <span class="proj-tag tag-cyan">C# · Windows</span>
+    </div>
+    <div class="proj-card" onclick="openModal('lovenote')" tabindex="0" role="button">
+      <span class="proj-icon">💌</span>
+      <div class="proj-title">Lovenote System</div>
+      <p class="proj-desc">A digital messaging and dedication platform built for events and celebrations — kiosk-ready and touch-friendly.</p>
+      <span class="proj-tag tag-purple">PHP · Web</span>
+    </div>
+    <div class="proj-card" onclick="openModal('breaktime')" tabindex="0" role="button">
+      <span class="proj-icon">⏸️</span>
+      <div class="proj-title">Breaktime System</div>
+      <p class="proj-desc">Employee break scheduling and monitoring system that tracks time, enforces policies, and logs records automatically.</p>
+      <span class="proj-tag tag-green">Python · Desktop</span>
+    </div>
+    <div class="proj-card" onclick="openModal('exam')" tabindex="0" role="button">
+      <span class="proj-icon">📝</span>
+      <div class="proj-title">Exam Generator</div>
+      <p class="proj-desc">Randomized exam paper generation with question banks, item analysis, and printable or digital output formats.</p>
+      <span class="proj-tag tag-red">PHP · Laravel</span>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills" id="skills">
+  <div class="skills-header fade-in">
+    <p class="section-label">Our Stack</p>
+    <h2 class="section-title">Full-Stack, Front to Back</h2>
+    <p class="section-desc">We cover every layer — beautiful interfaces, solid APIs, efficient databases, and secure Linux servers.</p>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card fade-in"><div class="skill-icon">🐘</div><div class="skill-name">PHP Development</div><p class="skill-desc">Custom web apps and APIs using pure PHP and Laravel — fast, maintainable, and production-ready.</p></div>
+    <div class="skill-card fade-in"><div class="skill-icon">🐍</div><div class="skill-name">Python Scripting</div><p class="skill-desc">Automation, data processing, desktop tools, and backend services built with Python and its ecosystem.</p></div>
+    <div class="skill-card fade-in"><div class="skill-icon">🔷</div><div class="skill-name">C# Applications</div><p class="skill-desc">Windows desktop and kiosk apps with polished .NET interfaces and hardware integration.</p></div>
+    <div class="skill-card fade-in"><div class="skill-icon">🎨</div><div class="skill-name">UI/UX with Figma</div><p class="skill-desc">High-fidelity prototypes and design systems — every screen designed before code is written.</p></div>
+    <div class="skill-card fade-in"><div class="skill-icon">🗄️</div><div class="skill-name">Database Design</div><p class="skill-desc">MySQL, PostgreSQL, and SQLite — normalized schemas, optimized queries, and reliable data integrity.</p></div>
+    <div class="skill-card fade-in"><div class="skill-icon">🛡️</div><div class="skill-name">Linux Server Management</div><p class="skill-desc">VPS setup, Nginx/Apache, SSL, firewalls, and ongoing server security hardening.</p></div>
+  </div>
+</section>
+
+<!-- STACK PILLS -->
+<section class="stack">
+  <div class="fade-in">
+    <p class="section-label">Technologies</p>
+    <div class="stack-row">
+      <span class="stack-pill"><span class="dot" style="background:#8892be"></span>PHP</span>
+      <span class="stack-pill"><span class="dot" style="background:#e34f26"></span>Laravel</span>
+      <span class="stack-pill"><span class="dot" style="background:#3776ab"></span>Python</span>
+      <span class="stack-pill"><span class="dot" style="background:#512bd4"></span>C# / .NET</span>
+      <span class="stack-pill"><span class="dot" style="background:#f7df1e"></span>JavaScript</span>
+      <span class="stack-pill"><span class="dot" style="background:#00a4ef"></span>MySQL</span>
+      <span class="stack-pill"><span class="dot" style="background:#336791"></span>PostgreSQL</span>
+      <span class="stack-pill"><span class="dot" style="background:#f24e1e"></span>Figma</span>
+      <span class="stack-pill"><span class="dot" style="background:#f05032"></span>Git</span>
+      <span class="stack-pill"><span class="dot" style="background:#009639"></span>Linux</span>
+      <span class="stack-pill"><span class="dot" style="background:#269539"></span>Nginx</span>
+      <span class="stack-pill"><span class="dot" style="background:#cc2927"></span>Apache</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="process-header fade-in">
+    <p class="section-label">How We Work</p>
+    <h2 class="section-title">Simple, Transparent Process</h2>
+    <p class="section-desc">No black boxes. You'll know exactly what we're building and when it ships.</p>
+  </div>
+  <div class="process-steps">
+    <div class="step fade-in"><div class="step-num">01</div><div class="step-title">Discovery & Scope</div><p class="step-desc">We learn your requirements, define what success looks like, and agree on a clear project scope and timeline.</p></div>
+    <div class="step fade-in"><div class="step-num">02</div><div class="step-title">Design in Figma</div><p class="step-desc">Every screen is designed and approved before development begins — fewer surprises, faster builds.</p></div>
+    <div class="step fade-in"><div class="step-num">03</div><div class="step-title">Build & Test</div><p class="step-desc">We develop iteratively with regular check-ins. Bugs are caught early, not at launch.</p></div>
+    <div class="step fade-in"><div class="step-num">04</div><div class="step-title">Deploy & Support</div><p class="step-desc">We handle deployment on secure Linux servers and provide ongoing support after go-live.</p></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-glow"></div>
+  <p class="section-label fade-in">Let's Work Together</p>
+  <h2 class="section-title fade-in">Got a system in mind?</h2>
+  <p class="section-desc fade-in">Whether it's a kiosk, a web platform, or a desktop tool — we'll figure it out and build it right.</p>
+  <div class="cta-actions fade-in">
+    <a href="mailto:hello@devforge.dev" class="btn-primary">Send Us a Message</a>
+    <a href="#projects" class="btn-ghost">View Our Work</a>
+  </div>
+  <p class="cta-note fade-in">Based in the Philippines · Available for local and remote projects</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-left">© 2025 DevForge Studio. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#process">Process</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+const projects = {
+  photobooth: {
+    icon: '📸',
+    title: 'Photobooth System',
+    subtitle: 'A fully interactive kiosk-based photo capture system for events, malls, and studios. Users take photos, apply live filters, pick frames, and print or share digitally — all from a touch screen.',
+    features: [
+      'Live camera feed with real-time filter preview',
+      'Custom branded frame overlays and multi-shot layouts',
+      'Instant thermal or standard printer integration',
+      'QR code generation for instant digital downloads',
+      'Admin panel for session logs and analytics',
+      'Offline-first — works without internet connection',
+    ],
+    tech: ['C#', '.NET WinForms', 'AForge.NET', 'SQLite', 'Thermal Printer SDK', 'Figma'],
+  },
+  lovenote: {
+    icon: '💌',
+    title: 'Lovenote System',
+    subtitle: 'A digital message dedication platform for weddings, debuts, and reunions. Guests type heartfelt messages displayed on a main screen or stored for the celebrant to read later.',
+    features: [
+      'Touch-friendly kiosk interface for message input',
+      'Real-time message display on a projection screen',
+      'Admin moderation dashboard to approve or hide messages',
+      'Custom branding per event — themes, colors, logos',
+      'Message archive with export to PDF or printout',
+      'Optional photo attachment per message',
+    ],
+    tech: ['PHP', 'MySQL', 'JavaScript', 'WebSockets', 'Bootstrap', 'Figma'],
+  },
+  breaktime: {
+    icon: '⏸️',
+    title: 'Breaktime System',
+    subtitle: 'An employee break monitoring system for offices and BPOs. Staff clock in and out of breaks via a desktop app while supervisors see real-time status and receive alerts for violations.',
+    features: [
+      'Employee login with break clock-in / clock-out',
+      'Real-time supervisor dashboard with live status',
+      'Automatic overtime break detection and alert notifications',
+      'Daily, weekly, and monthly break usage reports',
+      'Shift-based break policy configuration per department',
+      'Export logs to CSV or Excel for payroll or HR',
+    ],
+    tech: ['Python', 'PyQt5', 'SQLite', 'PostgreSQL', 'Pandas', 'Figma'],
+  },
+  exam: {
+    icon: '📝',
+    title: 'Exam Generator',
+    subtitle: 'A smart exam paper builder for schools and training centers. Teachers manage question banks and the system auto-generates randomized, print-ready exam sheets with answer keys.',
+    features: [
+      'Question bank management by subject, topic, and difficulty',
+      'Randomized question and choice shuffling per student copy',
+      'Multiple question types: MCQ, True/False, Identification',
+      'Auto-generated answer key and scoring rubric',
+      'Print-ready PDF output with school letterhead',
+      'Item analysis and question difficulty tracking over time',
+    ],
+    tech: ['PHP', 'Laravel', 'MySQL', 'DOMPDF', 'Livewire', 'Figma'],
+  },
+};
+
+function openModal(key) {
+  const p = projects[key];
+  document.getElementById('mIcon').textContent = p.icon;
+  document.getElementById('mTitle').textContent = p.title;
+  document.getElementById('mSubtitle').textContent = p.subtitle;
+  document.getElementById('mFeatures').innerHTML = p.features.map(f => `<li>${f}</li>`).join('');
+  document.getElementById('mTech').innerHTML = p.tech.map(t => `<span class="modal-tech-pill">${t}</span>`).join('');
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function goTo(hash) {
+  closeModal();
+  setTimeout(() => {
+    const el = document.querySelector(hash);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 340);
+}
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.querySelectorAll('.proj-card').forEach(card => {
+  card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); } });
+});
+
+// Scroll fade-in
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 80); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
